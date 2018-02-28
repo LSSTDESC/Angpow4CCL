@@ -85,6 +85,7 @@ CXXOBJ = $(OBJ)walltimer.o \
 	$(OBJ)angpow_powspec.o \
 	$(OBJ)angpow_parameters.o \
 	$(OBJ)angpow_cosmo.o \
+	$(OBJ)angpow_ccl.o \
 	$(OBJ)angpow_ctheta.o 
 	#$(OBJ)angpow_growth.o
 
@@ -101,6 +102,7 @@ CXXSHOBJ = walltimer.o \
 	angpow_powspec.o \
 	angpow_parameters.o \
 	angpow_cosmo.o \
+	angpow_ccl.o \
 	angpow_ctheta.o \
 	angpow_growth.o
 
