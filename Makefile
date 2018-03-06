@@ -132,6 +132,7 @@ CXXHDR =  $(INCEXT)walltimer.h \
 	$(INCEXT)angpow_tools.h \
 	$(INCEXT)angpow_parameters.h \
 	$(INCEXT)angpow_clbase.h \
+	$(INCEXT)angpow_ccl_private.h \
 	$(INCEXT)angpow_ctheta.h 
 	#$(INCEXT)angpow_growth_base.h \
 	#$(INCEXT)angpow_growth.h 

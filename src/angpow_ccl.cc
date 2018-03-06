@@ -1,6 +1,3 @@
-#ifndef ANGPOW_CCL_SEEN
-#define ANGPOW_CCL_SEEN
-
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
@@ -21,24 +18,11 @@
 #include "Angpow/angpow_exceptions.h"  //exceptions
 #include "Angpow/angpow_integrand_base.h"
 
+#define INFILE_ANGPOWCCL_CC 
+#include "Angpow/angpow_ccl_private.h"
+
 
 #define CCL_ERROR_ANGPOW 1041
-
-//declaration of structures
-typedef struct s_splpar SplPar; // correspond to SplPar
-typedef struct s_cosmology ccl_cosmology; // correspond to ccl_cosmology
-struct s_cosmology { char status_message[500]; };
-typedef struct s_cltracer CCL_ClTracer; // correspond to CCL_ClTracer
-struct s_cltracer { int has_rsd; int has_magnification; double chimin; double chimax; double zmin; double zmax; SplPar * spl_bz; SplPar * spl_nz;};
-typedef struct s_clworkspace CCL_ClWorkspace; // correspond to CCL_ClWorksapce
-struct s_clworkspace { int lmax; int l_limber; int l_linstep; double l_logstep; int * l_arr;};
-
-//declarations of functions
-typedef double (* Spline_eval)(double , SplPar *); // correspond to ccl_spline_eval
-typedef double (* Comoving_radial_distance)(ccl_cosmology *, double , int *); // correspond to ccl_comoving_radial_distance
-typedef double (* Scale_factor_of_chi)(ccl_cosmology *, double , int *); // correspond to ccl_scale_factor_of_chi
-typedef double (* Growth_rate)(ccl_cosmology *, double , int *); // correspond to ccl_growth_rate
-typedef double (* Nonlin_matter_power)(ccl_cosmology *, double , double , int *); // correspond to ccl_non_linear_matter_power
 
 
 //! Here CCL is passed to Angpow base classes
@@ -102,7 +86,7 @@ namespace Angpow {
   class IntegrandCCL : public IntegrandBase {
   public:
   IntegrandCCL(Comoving_radial_distance chi, Growth_rate f, Nonlin_matter_power P, Spline_eval spl,
-	       CCL_ClTracer* clt, ccl_cosmology* cosmo, int ell=0, r_8 z=0.):
+	        angpow_cltracer* clt, ccl_cosmology* cosmo,int ell=0, r_8 z=0.):
     chi_(chi), f_(f), P_(P), spl_(spl), clt_(clt), cosmo_(cosmo), ell_(ell), z_(z) {
       Init(ell,z);
     }
@@ -159,7 +143,7 @@ namespace Angpow {
     Growth_rate f_; // function to get growth rate from redshift
     Nonlin_matter_power P_; // funciton to get matter power spectrum
     Spline_eval spl_;
-    CCL_ClTracer* clt_;  //no ownership
+    angpow_cltracer* clt_;  //no ownership
     ccl_cosmology* cosmo_;  //no ownership
     int ell_;  // multipole ell
     r_8 z_;   // redshift z
@@ -171,7 +155,8 @@ namespace Angpow {
     
     //Minimal copy to allow Main operator(int, r_8, r_8) to work
     //JEC 22/4/17 use cloning of PowerSpectrum
-    IntegrandCCL(const IntegrandCCL& copy) : clt_(copy.clt_),
+    IntegrandCCL(const IntegrandCCL& copy) : clt_(copy.clt_), chi_(copy.chi_),f_(copy.f_),
+					     P_(copy.P_),spl_(copy.spl_),
 					     cosmo_(copy.cosmo_), ell_(0), z_(0), jlR_(0), jlp1R_(0){} 
 
   };//IntegrandCCL
@@ -181,50 +166,49 @@ namespace Angpow {
 
 
 
-
 void ccl_angular_cls_angpow_default(Spline_eval spl, Comoving_radial_distance chi,
 			    Scale_factor_of_chi a, Growth_rate f, Nonlin_matter_power P,
 			    ccl_cosmology *ccl_cosmo, CCL_ClWorkspace *w,
 			    CCL_ClTracer *clt1,CCL_ClTracer *clt2,
-			    double *cl_out,int * status)
+			    struct angpow_cltracer *a_clt1, struct angpow_cltracer *a_clt2,
+			    struct angpow_clworkspace *a_w,	    
+			    char * message, double *cl_out,int * status)
 {
   // Initialize the Angpow parameters
   int chebyshev_order_1=9; // polynoms of order 2^{N}
   int chebyshev_order_2=9;
   int nroots=200; 
-  int l_max_use=std::min(w->l_limber,w->lmax);
-  double cl_kmax= 3.14*l_max_use/std::min(clt1->chimin,clt2->chimin); 
-  int nsamp_z_1=(int)(std::max((double)15,0.124*cl_kmax*(clt1->chimin+clt1->chimax)-0.76*l_max_use));
-  int nsamp_z_2=(int)(std::max((double)15,0.124*cl_kmax*(clt2->chimin+clt2->chimax)-0.76*l_max_use));
+  int l_max_use=std::min(a_w->l_limber,a_w->lmax);
+  double cl_kmax= 3.14*l_max_use/std::min(a_clt1->chimin,a_clt2->chimin); 
+  int nsamp_z_1=(int)(std::max((double)15,0.124*cl_kmax*(a_clt1->chimin+a_clt1->chimax)-0.76*l_max_use));
+  int nsamp_z_2=(int)(std::max((double)15,0.124*cl_kmax*(a_clt2->chimin+a_clt2->chimax)-0.76*l_max_use));
   //benchmark prints
   /*
-  printf("lmax= %d l_limber= %d\n", l_max_use,w->l_limber);
+  printf("lmax= %d l_limber= %d\n", l_max_use,a_w->l_limber);
   printf("chebyshevorder1: %d chebyshevorder2: %d\n",chebyshev_order_1,chebyshev_order_2);
   printf("radialorder1: %d radialorder2: %d\n", nsamp_z_1,nsamp_z_2);
-  printf("kmax= %.3g\n", cl_kmax);
+  printf("kmax= %.lg\n", cl_kmax);
   printf("nroots= %d\n",nroots);
-  printf(" %.3g %.3g %.3g\n", clt1->chimax,clt1->chimin,w->dchi);
-  printf(" %.3g %.3g %.3g\n", clt2->chimax,clt2->chimin,w->dchi);
+  printf(" %.lg %.lg\n", (double)a_clt1->chimax,(double)a_clt1->chimin);//,a_w->dchi);
+  printf(" %.lg %.lg\n", (double)a_clt2->chimax,(double)a_clt2->chimin);//,a_w->dchi);
   */
-
   // Initialize the radial selection windows W(z)
-  Angpow::RadSplineSelect Z1win(spl,clt1->spl_nz,clt1->zmin,clt1->zmax);
-  Angpow::RadSplineSelect Z2win(spl,clt2->spl_nz,clt2->zmin,clt2->zmax);
-
+  Angpow::RadSplineSelect Z1win(spl,a_clt1->spl_nz,a_clt1->zmin,a_clt1->zmax);
+  Angpow::RadSplineSelect Z2win(spl,a_clt2->spl_nz,a_clt2->zmin,a_clt2->zmax);
+ 
   // The cosmological distance tool to make the conversion z <-> r(z)
   Angpow::CosmoCoordCCL cosmo(chi,a,ccl_cosmo);
-
   // Initilaie the two integrand functions f(ell,k,z)
-  Angpow::IntegrandCCL int1(chi,f,P,spl,clt1,ccl_cosmo);
-  Angpow::IntegrandCCL int2(chi,f,P,spl,clt2,ccl_cosmo);
+  Angpow::IntegrandCCL int1(chi,f,P,spl,a_clt1,ccl_cosmo);
+  Angpow::IntegrandCCL int2(chi,f,P,spl,a_clt2,ccl_cosmo);
 
   // Initialize the Cl with parameters to select the ell set which is interpolated after the processing
-  Angpow::Clbase clout(l_max_use+1,w->l_linstep,w->l_logstep);
+  Angpow::Clbase clout(l_max_use+1,a_w->l_linstep,a_w->l_logstep);
   // Check Angpow's ells match those of CCL (maybe we could to pass those ells explicitly to Angpow)
   for(int index_l=0; index_l<clout.Size(); index_l++) {
-    if(clout[index_l].first!=w->l_arr[index_l]) {
+    if(clout[index_l].first!=a_w->l_arr[index_l]) {
       *status=CCL_ERROR_ANGPOW;
-      strcpy(ccl_cosmo->status_message,"ccl_cls.c: ccl_angular_cls_angpow_default(); "
+      strcpy(message,"ccl_cls.c: ccl_angular_cls_angpow_default(); "
 	     "ell-bins defined in angpow don't match those of CCL\n");
       return;
     }
@@ -243,4 +227,5 @@ void ccl_angular_cls_angpow_default(Spline_eval spl, Comoving_radial_distance ch
     cl_out[index_l]=clout[index_l].second;
 }
 
-# endif
+
+  
