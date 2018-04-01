@@ -1,0 +1,9 @@
+.ropeproject/
+
+lib/
+Objs/
+bin/
+build/
+data/
+
+angpow_bench*param.txt

@@ -1,0 +1,14 @@
+language: c
+
+os:
+  - linux
+  - osx
+
+install: true
+
+script:
+    - cmake --version
+    - mkdir build
+    - cmake -H. -Bbuild
+    - make -Cbuild install
+    - build/angpow angpow_bench1.ini
