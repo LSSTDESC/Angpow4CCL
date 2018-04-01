@@ -12,3 +12,8 @@ script:
     - cmake -H. -Bbuild
     - make -Cbuild
     - build/angpow angpow_bench1.ini
+    - build/angpow angpow_bench2.ini
+    - build/angpow angpow_bench3.ini
+    - build/angpow angpow_bench4.ini
+    - build/angpow angpow_bench5.ini
+    - build/angpow angpow_bench6.ini
