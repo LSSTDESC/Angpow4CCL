@@ -8,7 +8,7 @@ project(angpow)
     # Uses system libraries or downloads and build if necessary
     include(BuildFFTW)
     include_directories(${FFTW_INCLUDES})
-    link_directories(${FFTW_INCLUDE_DIRS})
+    link_directories(${FFTW_LIBRARY_DIRS})
 
     # Compilation flags
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Apple)?Clang$")
