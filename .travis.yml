@@ -10,5 +10,5 @@ script:
     - cmake --version
     - mkdir build
     - cmake -H. -Bbuild
-    - make -Cbuild install
+    - make -Cbuild
     - build/angpow angpow_bench1.ini
