@@ -4,7 +4,13 @@ os:
   - linux
   - osx
 
-install: true
+before_install:
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get -qq update; fi
+
+install:
+    - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install fftw; fi
+    - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install gsl; fi
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install -y libgsl-dev libfftw3-dev; fi
 
 script:
     - cmake --version

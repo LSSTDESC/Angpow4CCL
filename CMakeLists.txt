@@ -6,9 +6,10 @@ list(APPEND CMAKE_MODULE_PATH  "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 project(angpow)
 
     # Uses system libraries or downloads and build if necessary
-    include(BuildFFTW)
-    include_directories(${FFTW_INCLUDES})
-    link_directories(${FFTW_LIBRARY_DIRS})
+    include(FindFFTW)
+    include(FindGSL)
+    include_directories(${FFTW_INCLUDES} ${GSL_INCLUDE_DIRS})
+    link_directories(${GSL_LIBRARY_DIRS})
 
     # Compilation flags
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Apple)?Clang$")
@@ -24,7 +25,7 @@ project(angpow)
 	                 src/angpow_chebyshevInt.cc src/angpow_radint.cc src/angpow_kinteg.cc
                    src/angpow_pk2cl.cc src/angpow_tools.cc src/angpow_clbase.cc
                    src/angpow_powspec.cc src/angpow_parameters.cc src/angpow_cosmo.cc
-                   src/angpow_ctheta.cc) # src/angpow_ccl.cc
+                   src/angpow_ctheta.cc src/angpow_ccl.cc)
 
 
     # Adds path to include folder
@@ -32,13 +33,8 @@ project(angpow)
 
     # Builds the main Angpow library
     add_library(libangpow ${ANGPOW_SRC})
-    target_link_libraries(libangpow ${FFTW_LIBRARIES} m)
-    if(NOT FFTW_FOUND)
-      add_dependencies(libangpow FFTW)
-    endif()
+    set_target_properties(libangpow PROPERTIES PREFIX "")
+    target_link_libraries(libangpow ${FFTW_LIBRARIES} ${GSL_LIBRARIES} m)
 
     add_executable(angpow angpow.cc)
     target_link_libraries(angpow libangpow)
-    #
-    # add_executable(limber limber.cc)
-    # target_link_libraries(limber libangpow)
