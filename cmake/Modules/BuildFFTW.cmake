@@ -13,7 +13,7 @@ if(NOT FFTW_FOUND)
         URL http://www.fftw.org/fftw-${FFTWVersion}.tar.gz
         URL_MD5 ${GSLMD5}
         DOWNLOAD_NO_PROGRESS 1
-        CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR}/extern --enable-shared=no --with-pic=yes --enable-sse
+        CONFIGURE_COMMAND ./configure --prefix=${CMAKE_BINARY_DIR}/extern --enable-shared=no --with-pic=yes
         BUILD_COMMAND           make -j8
         INSTALL_COMMAND         make install
         BUILD_IN_SOURCE 1)
