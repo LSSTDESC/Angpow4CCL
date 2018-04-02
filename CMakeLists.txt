@@ -25,7 +25,7 @@ project(angpow)
 	                 src/angpow_chebyshevInt.cc src/angpow_radint.cc src/angpow_kinteg.cc
                    src/angpow_pk2cl.cc src/angpow_tools.cc src/angpow_clbase.cc
                    src/angpow_powspec.cc src/angpow_parameters.cc src/angpow_cosmo.cc
-                   src/angpow_ctheta.cc src/angpow_ccl.cc)
+                   src/angpow_ctheta.cc) # src/angpow_ccl.cc)
 
 
     # Adds path to include folder
