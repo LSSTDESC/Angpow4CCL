@@ -7,7 +7,7 @@ project(angpow)
 
     # Uses system libraries or downloads and build if necessary
     include(FindFFTW)
-    include(FindGSL)
+    # include(FindGSL)
     include_directories(${FFTW_INCLUDES} ${GSL_INCLUDE_DIRS})
     link_directories(${GSL_LIBRARY_DIRS})
 
