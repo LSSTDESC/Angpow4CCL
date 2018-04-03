@@ -1,0 +1,19 @@
+# Select a main language
+language: c
+
+# Select the operating system (either linux or osx)
+os:
+  - linux
+
+# Run some pre-install commands, here install fftw and gsl
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libfftw3-dev libgsl0-dev
+
+# Main building and install step
+install:
+  - make
+
+# Runs tests and do extra stuff
+script:
+  - ./verif.sh
