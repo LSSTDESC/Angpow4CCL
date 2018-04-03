@@ -12,7 +12,7 @@ before_install:
 
 # Main building and install step
 install:
-  - make
+  - make angpow
 
 # Runs tests and do extra stuff
 script:
