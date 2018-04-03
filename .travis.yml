@@ -16,4 +16,4 @@ install:
 
 # Runs tests and do extra stuff
 script:
-  - ./verif.sh
+  - bash verif.sh
