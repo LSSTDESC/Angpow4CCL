@@ -11,7 +11,7 @@ install:
     - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew cask uninstall oclint; fi
     - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install fftw; fi
     - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install gsl; fi
-    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install -y libfftw3-dev; fi
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install -y libfftw3-dev libgsl0-dev; fi
 
 script:
     - cmake --version
