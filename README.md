@@ -77,7 +77,7 @@ so, **before** running `CMake`:
 $ export CC=gcc
 ```
   - *Install directory*: By default, `CMake` will try to install `AngPow` in `/usr/local`, if you would like
-to instead install CCL in a user-defined directory (for instance if you don't have
+to instead install AngPow in a user-defined directory (for instance if you don't have
  admin privileges), you can specify it to `CMake` by running instead the following command:
 ```sh
 $ cmake -DCMAKE_INSTALL_PREFIX=/path/to/install ..
