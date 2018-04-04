@@ -7,9 +7,9 @@ project(angpow)
 
     # Uses system libraries or downloads and build if necessary
     include(FindFFTW)
-    # include(FindGSL)
+    #include(FindGSL)
     include_directories(${FFTW_INCLUDES} ${GSL_INCLUDE_DIRS})
-    link_directories(${GSL_LIBRARY_DIRS})
+    #link_directories(${GSL_LIBRARY_DIRS})
 
     # Compilation flags
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Apple)?Clang$")
@@ -34,7 +34,7 @@ project(angpow)
     # Builds the main Angpow library
     add_library(libangpow ${ANGPOW_SRC})
     set_target_properties(libangpow PROPERTIES PREFIX "")
-    target_link_libraries(libangpow ${FFTW_LIBRARIES} ${GSL_LIBRARIES} m)
+    target_link_libraries(libangpow ${FFTW_LIBRARIES} m)
 
     add_executable(angpow angpow.cc)
     target_link_libraries(angpow libangpow)
