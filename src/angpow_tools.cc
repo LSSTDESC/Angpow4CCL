@@ -23,7 +23,8 @@ void getLlist(int l_min, int l_max, int l_linstep, double l_logstep,
   
   increment = std::max((int)(current_l * (l_logstep-1.)),1);
     
-  while ((current_l < l_max) && (increment < l_linstep)) {
+  while (((current_l+increment) < l_max) && 
+	 (increment < l_linstep)) {
       
     index_l ++;
     current_l += increment;
@@ -36,7 +37,7 @@ void getLlist(int l_min, int l_max, int l_linstep, double l_logstep,
 
   increment = l_linstep;
 
-  while (current_l < l_max) {
+  while ((current_l+increment) <= l_max) {
 
     index_l ++;
     current_l += increment;
@@ -44,6 +45,13 @@ void getLlist(int l_min, int l_max, int l_linstep, double l_logstep,
   }
 
   /** - last value set to exactly l_max */
+
+  if (current_l != l_max) {
+
+    index_l ++;
+    current_l = l_max;
+
+  } 
 
   l_size = index_l+1;
 
@@ -53,31 +61,34 @@ void getLlist(int l_min, int l_max, int l_linstep, double l_logstep,
   l.resize(l_size,0);
 
   index_l = 0;
-  current_l = l_min;
+  l[0] = l_min;
 
-  increment = std::max((int)(current_l * (l_logstep-1.)),1);
+  increment = std::max((int)(l[0] * (l_logstep-1.)),1);
 
-  while ((current_l < l_max) && (increment < l_linstep)) {
-
-    l[index_l]=current_l;
+  while (((l[index_l]+increment) < l_max) && 
+	 (increment < l_linstep)) {
+      
     index_l ++;
-    current_l+=increment;
-    increment = std::max((int)(current_l * (l_logstep-1.)),1);
-     
+    l[index_l]=l[index_l-1]+increment;
+    increment = std::max((int)(l[index_l] * (l_logstep-1.)),1);
+ 
   }
 
   increment = l_linstep;
 
-  while (current_l < l_max) {
+  while ((l[index_l]+increment) <= l_max) {
 
-    l[index_l]=current_l;
     index_l ++;
-    current_l+=increment;
+    l[index_l]=l[index_l-1]+increment;
  
   }
 
-  l[index_l]=current_l;
+  if (l[index_l] != l_max) {
 
+    index_l ++;
+    l[index_l]= l_max;
+       
+  }
 }//getLlist
 
 
@@ -144,8 +155,8 @@ if( n>Nel || force ) {
 // des-allocation eventuelle de X,Y
 if( XY_Created ) {
   if( !order || n>Nel || force ) {
-    if( X != NULL ) delete [] X;  X = NULL;
-    if( Y != NULL ) delete [] Y;  Y = NULL;
+    if( X != NULL ){ delete [] X;  X = NULL;}
+    if( Y != NULL ){ delete [] Y;  Y = NULL;}
     XY_Created = false;
   }
 }
@@ -373,9 +384,9 @@ void CSpline2::SetNewTab(int n1,double* x1,int n2,double* x2,double* y
   //des-allocation eventuelle de X1,X2,Y
   if( XY_Created ) {
     if( !order || n1>Nel1 || n2>Nel2 || force ) {
-      if( X1 != NULL ) delete [] X1; X1 = NULL;
-      if( X2 != NULL ) delete [] X2; X2 = NULL;
-      if( Y != NULL )  delete [] Y;  Y  = NULL;
+      if( X1 != NULL ){ delete [] X1; X1 = NULL;}
+      if( X2 != NULL ){ delete [] X2; X2 = NULL;}
+      if( Y != NULL ){  delete [] Y;  Y  = NULL;}
       XY_Created = false;
     }
   }
