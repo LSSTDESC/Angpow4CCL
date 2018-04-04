@@ -36,5 +36,24 @@ project(angpow)
     set_target_properties(libangpow PROPERTIES PREFIX "")
     target_link_libraries(libangpow ${FFTW_LIBRARIES} ${GSL_LIBRARIES} m)
 
+    # Compiles angpow executable
     add_executable(angpow angpow.cc)
     target_link_libraries(angpow libangpow)
+
+    # Creates a pkg-config file pour faire pro
+    SET(PROJECT_DESCRIPTION "AngPow: Angular Power spectrum")
+    SET(PKG_CONFIG_LIBDIR "${CMAKE_INSTALL_PREFIX}/lib")
+    SET(PKG_CONFIG_INCLUDEDIR "${CMAKE_INSTALL_PREFIX}/include/")
+    SET(PKG_CONFIG_REQUIRES "gsl >= 1.6")
+    SET(PKG_CONFIG_REQUIRES_PRIVATE "fftw3")
+    SET(PKG_CONFIG_LIBS "-L${PKG_CONFIG_LIBDIR} -langpow -lm")
+    SET(PKG_CONFIG_CFLAGS "-I${PKG_CONFIG_INCLUDEDIR}")
+    CONFIGURE_FILE( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/pkg-config.cmakein"
+                    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc" )
+
+    # Installs library and include files
+    install(TARGETS libangpow DESTINATION lib)
+    install(TARGETS angpow DESTINATION bin)
+    install(DIRECTORY inc/Angpow DESTINATION include/AngPow
+            FILES_MATCHING PATTERN "*.h")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/angpow.pc DESTINATION lib/pkgconfig)
