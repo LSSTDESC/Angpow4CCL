@@ -39,8 +39,10 @@ The apodization function depends on the $\ell_s$ scale which depends on $L_{max}
 
 
 # Download		
-Download as Guest
-git clone git@gitlab.in2p3.fr:campagne/AngPow.git
+Download as Guest:
+```
+git clone https://github.com/LSSTDESC/Angpow4CCL
+```
 
 # Required Librairy
 
@@ -50,8 +52,38 @@ The library is avaliable [here](http://www.fftw.org/download.html). Use `./confi
 
 * Notice that some Bessel part of the Boost (version >= 1.58) library has been extracted and put in the `inc/boost` directory provided by **Angpow**.
 
+* Compiling the CCL extension will also require GSL
+
 # Compilation/Installation/Setup
 
+## Compiling with CMake
+
+To automatically configure and compile on different platforms follow this procedure:
+
+```sh
+$ mkdir build && cd build
+$ cmake ..
+$ make
+$ make install # optional
+```
+
+**Note:** This is the default install procedure, but depending on your system
+you might want to customize the install process. Here are a few common configuration
+options:
+  - *C compiler*: In case you have several C compilers on your machine, you will probably
+need to specify which one to use to `CMake` by setting the environment `CC` like
+so, **before** running `CMake`:
+```sh
+$ export CC=gcc
+```
+  - *Install directory*: By default, `CMake` will try to install `AngPow` in `/usr/local`, if you would like
+to instead install AngPow in a user-defined directory (for instance if you don't have
+ admin privileges), you can specify it to `CMake` by running instead the following command:
+```sh
+$ cmake -DCMAKE_INSTALL_PREFIX=/path/to/install ..
+```
+
+## Compiling with manual make congiguration
 1. edit Makefile and adapat to local platform :
 
 	* adapt to the type of Machine MacOSX (Darwin) vs Linux

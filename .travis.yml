@@ -1,19 +1,26 @@
-# Select a main language
 language: c
 
-# Select the operating system (either linux or osx)
 os:
   - linux
+  - osx
 
-# Run some pre-install commands, here install fftw and gsl
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libfftw3-dev libgsl0-dev
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get -qq update; fi
 
-# Main building and install step
 install:
-  - make all
+    - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew cask uninstall oclint; fi
+    - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install fftw; fi
+    - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then brew install gsl; fi
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then sudo apt-get install -y libfftw3-dev libgsl0-dev; fi
 
-# Runs tests and do extra stuff
 script:
-  - bash verif.sh
+    - cmake --version
+    - mkdir build
+    - cmake -H. -Bbuild
+    - make -Cbuild
+    - build/angpow angpow_bench1.ini
+    - build/angpow angpow_bench2.ini
+    - build/angpow angpow_bench3.ini
+    - build/angpow angpow_bench4.ini
+    - build/angpow angpow_bench5.ini
+    - build/angpow angpow_bench6.ini
