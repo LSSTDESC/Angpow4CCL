@@ -1,4 +1,4 @@
-Angular Power spectrum [![Build Status](https://travis-ci.org/EiffL/Angpow4CCL.svg?branch=master)](https://travis-ci.org/EiffL/Angpow4CCL)
+Angular Power spectrum [![Build Status](https://travis-ci.org/LSSTDESC/Angpow4CCL.svg?branch=master)](https://travis-ci.org/LSSTDESC/Angpow4CCL)
 ======================================
 Version 2.x (last update of this file 5-Jan-17)
 
