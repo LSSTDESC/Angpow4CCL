@@ -22,7 +22,7 @@
 #include "Angpow/angpow_ccl_private.h"
 
 
-#define CCL_ERROR_ANGPOW 1041
+#define CCL_ERROR_ANGPOW 1042
 
 
 //! Here CCL is passed to Angpow base classes
