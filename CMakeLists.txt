@@ -54,6 +54,6 @@ project(angpow)
     # Installs library and include files
     install(TARGETS libangpow DESTINATION lib)
     install(TARGETS angpow DESTINATION bin)
-    install(DIRECTORY inc/Angpow DESTINATION include/AngPow
+    install(DIRECTORY inc/Angpow DESTINATION include
             FILES_MATCHING PATTERN "*.h")
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/angpow.pc DESTINATION lib/pkgconfig)
