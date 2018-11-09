@@ -11,7 +11,7 @@ CFLAGS = -fno-common  -O -fPIC
 #  Def compilateur C++ et flags
 CXX =  g++
 #JEC add -fopenmp -O3 -Wa,-q
-CXXFLAGS = -fno-common  -O3 -fPIC -fopenmp  -Wa,-q -Wall -Wpedantic -std=c++11 -march=native -ffast-math -m64
+CXXFLAGS = -fno-common  -O3 -fPIC -fopenmp  -Wa,-q -Wall -Wpedantic -std=c++11 -ffast-math -m64
 #CXXFLAGS = -fno-common -g -O3 -fPIC -Wa,-q -Wall -std=c++11
 # flags specifiques pour templates repository...
 CXXTEMPFLG =

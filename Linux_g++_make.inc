@@ -12,7 +12,7 @@ CFLAGS = -Wall -Wpointer-arith -Wmissing-prototypes -O  -fPIC
 #CXX =  $(GCCDIR)g++
 CXX =  c++
 #  Flag de warning -Wsynth NON inclus par defaut (04/2007)
-CXXFLAGS = -Wall -Wpointer-arith -O3 -fPIC -std=c++11 -fopenmp  -fno-common  -Wall -march=native -ffast-math -m64
+CXXFLAGS = -Wall -Wpointer-arith -O3 -fPIC -std=c++11 -fopenmp  -fno-common  -Wall  -ffast-math -m64
 # flags specifiques pour templates repository...
 CXXTEMPFLG =
 #  Compilo fortran

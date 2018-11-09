@@ -14,9 +14,9 @@ project(angpow)
     # Compilation flags
     if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(Apple)?Clang$")
       # using Clang, disabling OpenMP support
-      set(CMAKE_CXX_FLAGS "-fno-common  -O3 -fPIC -Wall -Wpedantic -std=c++11 -march=native -ffast-math -m64")
+      set(CMAKE_CXX_FLAGS "-fno-common  -O3 -fPIC -Wall -Wpedantic -std=c++11  -ffast-math -m64")
     else()
-      set(CMAKE_CXX_FLAGS "-Wall -Wpointer-arith -O3 -fPIC -std=c++11 -fopenmp  -fno-common  -Wall -march=native -ffast-math -m64")
+      set(CMAKE_CXX_FLAGS "-Wall -Wpointer-arith -O3 -fPIC -std=c++11 -fopenmp  -fno-common  -Wall -ffast-math -m64")
     endif()
 
 
