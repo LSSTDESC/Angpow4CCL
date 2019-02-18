@@ -6,7 +6,6 @@
 #include "ccl_background.h"
 #include "ccl_error.h"
 #include "ccl_utils.h"
-#include "ccl_params.h"
 #include "Angpow/angpow_ccl_private.h"
 
 //#pragma once
