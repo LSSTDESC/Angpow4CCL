@@ -19,6 +19,7 @@ project(angpow)
       set(CMAKE_CXX_FLAGS "-Wall -Wpointer-arith -O3 -fPIC -std=c++11 -fopenmp  -fno-common  -Wall -march=native -ffast-math -m64")
     endif()
 
+    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
     # Defines list of Angpow library src files
     set(ANGPOW_SRC src/walltimer.cc src/walltime_c.cc src/angpow_bessel.cc
